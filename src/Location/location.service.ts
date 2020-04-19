@@ -7,26 +7,24 @@ import { LocationDto } from './dto/location.dto';
 @Injectable()
 export class LocationService {
 
-  constructor(@InjectModel('Location') private readonly LocationModel: Model<Location>) {
+  constructor(@InjectModel('Location') private readonly _locationModel: Model<Location>) {
   }
 
-  async insertLocation(locationDto: LocationDto) {
-    const newLocation = new this.LocationModel(locationDto);
+  async insertLocation(locationDto: LocationDto): Promise<string> {
+    const newLocation = new this._locationModel(locationDto);
     const result = await newLocation.save();
     return result._id;
-
   }
 
-  async getLocation() {
-    const location = await this.LocationModel.find().exec();
-    return location
+  async getLocation() :Promise<Location[]> {
+    return await this._locationModel.find().exec()
 
   }
 
   async getLocationById(locationId: string): Promise<Location> {
     let location;
     try {
-      location = await this.LocationModel.findById(locationId).exec();
+      location = await this._locationModel.findById(locationId).exec();
     } catch (e) {
       throw new NotFoundException('could not find location');
     }
@@ -37,13 +35,16 @@ export class LocationService {
   }
 
   async updateLocation(locationDto:LocationDto) {
-    const updateLocation = await this.LocationModel.findById(locationDto.id).exec();
+    const updateLocation = await this._locationModel.findById(locationDto.id).exec();
 
     if (locationDto.name) {
       updateLocation.name = locationDto.name;
     }
-    if (locationDto.city) {
-      updateLocation.city = locationDto.city;
+    if (locationDto.streetName) {
+      updateLocation.streetName = locationDto.streetName;
+    }
+    if (locationDto.streetNumber) {
+      updateLocation.streetNumber = locationDto.streetNumber;
     }
     if (locationDto.address) {
       updateLocation.address = locationDto.address;
@@ -54,11 +55,11 @@ export class LocationService {
 
 
     const result = await updateLocation.save();
-    return null;
+    return result.id;
   }
 
   async deleteLocationById(locationId: any) {
-    await this.LocationModel.deleteOne(locationId);
-    return null;
+    await this._locationModel.deleteOne(locationId);
+
   }
 }

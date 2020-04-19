@@ -12,5 +12,5 @@ export interface Location extends mongoose.Document {
   name: string;
   city: string;
   address:string;
-  locationLicense: number;
+  locationLicense?: number;
 }

@@ -1,7 +1,8 @@
 export class LocationDto {
   id:string;
   name: string;
-  city: string;
+  streetName : string;
+  streetNumber : string;
   address:string;
   locationLicense: number;
   }
