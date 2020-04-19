@@ -1,5 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { HealthEntriesService } from './healthEntries.service';
+import { HealthEntry } from './interfaces/healthEntry.interface';
+import { CreateHealthEntryDto } from './dto/createHealthEntry.dto';
 
 @Controller('healthEntriesController')
 export class HealthEntriesController {
@@ -8,9 +10,15 @@ export class HealthEntriesController {
 
     }
 
+    @Post()
+    public async create(@Body() createHealthEntryDto: CreateHealthEntryDto) {
+        await this._healthEntriesService.create(createHealthEntryDto);
+    }
+
+
     @Get()
-    public findAll(): void {
-        this._healthEntriesService.addEntry();
+    public async findAll(): Promise<HealthEntry[]> {
+        return await this._healthEntriesService.findAll();
     }
 
 }
