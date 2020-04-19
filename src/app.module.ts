@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HealthEntriesModule } from './healthEntries/healthEntries.module';
-import { LocationModule } from './Business/location.module';
+import { LocationModule } from './Location/location.module';
 
 
 @Module({
